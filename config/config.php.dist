@@ -1,0 +1,11 @@
+<?php
+
+return [
+    'fallBackUrl' => 'http://google.com',
+    'actions'     => [
+        [
+            'action'  => 'product-a',
+            'forward' => 'http://google.com/abc/test1234'
+        ]
+    ]
+];
