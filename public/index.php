@@ -1,6 +1,6 @@
 <?php
 
-$configPath = __DIR__ . '/config/config.php';
+$configPath = __DIR__ . '/../config/config.php';
 
 if (file_exists($configPath)) {
     $config = require_once($configPath);
@@ -11,25 +11,24 @@ if (file_exists($configPath)) {
     ];
 }
 
-$pathParts = explode('/', $_SERVER['PHP_SELF']);
+$path   = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
+$action = str_replace($path, '', $_SERVER['REQUEST_URI']);
 
-if (count($pathParts) === 2) {
+$pathParts = explode('?', $action);
+
+if (count($pathParts) === 1) {
     $action = '';
 } else {
-    $action = end($pathParts);
+    $action = current($pathParts);
 }
 
-$params = '';
+$params = http_build_query($_GET);
 
 $url = $config['fallBackUrl'];
 
 foreach ($config['actions'] as $actionConfig) {
     if ($actionConfig['action'] == $action) {
-
-        $params = http_build_query($_GET);
-
         $url = sprintf('%s%s%s', $actionConfig['forward'], $params ? '?' : '', $params);
-
         break;
     }
 }
@@ -44,7 +43,7 @@ $stats = [
 
 $content = implode(';', $stats) . PHP_EOL;
 
-file_put_contents(__DIR__ . '/stats/stats.csv', $content, FILE_APPEND);
+file_put_contents(__DIR__ . '/../stats/stats.csv', $content, FILE_APPEND);
 
 header("HTTP/1.1 301 Moved Permanently");
 header("location: " . $url);
