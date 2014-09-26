@@ -22,10 +22,10 @@ $action = str_replace($path, '', $_SERVER['REQUEST_URI']);
 
 $pathParts = explode('?', $action);
 
-if (count($pathParts) === 2) {
+if (count($pathParts) <= 2) {
     $action = $pathParts[0];
 } else {
-    $action = '';
+    die('wrong url with to many ?s');
 }
 
 $params = http_build_query($_GET);
