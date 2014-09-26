@@ -50,7 +50,7 @@ $stats = [
 
 $content = implode(';', $stats) . PHP_EOL;
 
-$filePath =  sprintf('%s/../stats/%s_stats.csv', __DIR__, date('y-m-d'));
+$filePath =  sprintf('%s/../stats/%s_stats.csv', __DIR__, date('Y-m-d'));
 file_put_contents($filePath, $content, FILE_APPEND);
 
 header("HTTP/1.1 301 Moved Permanently");
